@@ -1,7 +1,6 @@
 import { v4 } from "uuid";
 import { useDispatch } from "react-redux";
-import { Actiontypes } from "../Redux/Reducer/Actionstype";
-
+import { addtodo } from "../Redux/Reducer/actions/todoactions";
 // Burdaki addform  bileşeninimizde bir veri var ve bu verinin store ' a aktarılması gerekli .Bu işlemi ise Reducer ile yapabiliriz.
 // Veriyi aktarmanın tek yolu var dispatch etmektir. usedispatch fonksiyonu kullanırız.
 
@@ -28,12 +27,9 @@ const Addform = () => {
 
     // oluşturulan todo yu store' a ekleyelimm.ff
     // console.log(newTodo);
-    dispatch({
-      type: Actiontypes.ADD_TODO,
-      payload: newTodo,
-    });
+    dispatch(addtodo(newTodo));
   };
-
+                
   return (
     <form onSubmit={handlesubmit} className="d-flex gap-1 my-5">
       <input 

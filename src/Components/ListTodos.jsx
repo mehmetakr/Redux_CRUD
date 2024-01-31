@@ -9,7 +9,7 @@ const Listtodocard = () => {
 
   const store = useSelector((store) => store.todoreducer);
 
-  console.log(store);
+  console.log(store.todos);
   return (
     <div>
       {store.todos.map((todo) => (

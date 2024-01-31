@@ -25,6 +25,7 @@ const initialstate = {
   todos: [],
   category: [],
 };
+  
 
 const todoreducer = (state = initialstate, action) => {
   switch (action.type) {
@@ -42,15 +43,21 @@ const todoreducer = (state = initialstate, action) => {
       return { ...state, todos: filtered };
 
     case Actiontypes.UPDATE_TODO:
+      // map metodu ile burada güncelleme işlemi gerçekleştirdik
+      // mape çevirdik item adında değere atadık değişkenleri
+      // item degerimiz action.payload adlı yapıcagımız değişkene eşitse actionun payloadını dönder( yani değişecek olan elemanı dönder) yoksa item ın kendisini gönder..
+      const newtodos = state.todos.map((item) =>
+        item.id === action.payload.id ? action.payload : item
+      );
+
+      return { ...state, todos: newtodos };
+
+      case Actiontypes.SET_TODOS:
+
+      return {...state,todos: action.payload}
 
 
-    // map metodu ile burada güncelleme işlemi gerçekleştirdik 
-    // mape çevirdik item adında değere atadık değişkenleri 
-    // item degerimiz action.payload adlı yapıcagımız değişkene eşitse actionun payloadını dönder( yani değişecek olan elemanı dönder) yoksa item ın kendisini gönder.. 
-    const newtodos= state.todos.map((item) =>  item.id===action.payload.id ? action.payload : item)
-
-      return  {...state,todos:newtodos };
-
+      
     // EĞERKİ GELEN AKSİYON YUKARIDAKİLERDEN HİÇBİRİ DEĞİLSE STATE İ DEĞİŞRTİRME
     default:
       return state;
@@ -60,9 +67,7 @@ const todoreducer = (state = initialstate, action) => {
 // reducer ı store'a tanıtmak için export et
 export default todoreducer;
 
-
-
- /*  // 1) splice yöntemi
+/*  // 1) splice yöntemi
        state 'deki kopyasını oluşurun
 
       const copytodos = [ ...state.todos ];

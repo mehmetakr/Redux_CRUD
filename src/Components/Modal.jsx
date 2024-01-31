@@ -1,8 +1,10 @@
 import { useDispatch } from "react-redux";
-
+import { Actiontypes } from "../Redux/Reducer/Actionstype";
+import { updatetodo } from "../Redux/Reducer/actions/todoactions";
+import axios from "axios";
 const Modal = ({ todo, close }) => {
   const dispatch = useDispatch();
-
+  console.log("asdasd", todo);
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -15,12 +17,13 @@ const Modal = ({ todo, close }) => {
 
     // eski todonun bütün verilerini alıp inputtan aldıgımız  veri ile güncelleme
 
-    // storedaki todoyu güncelle
+    //    PUT : BİR VERİNİN BÜTÜN DEĞERLERİNİ GÜNCELLEMEMİZİ SAĞLAR.
+    //   PATCH : PATCH İSE O VERİDEKİ BİR DEĞERİ GÜNCELLEME İŞLEMİ YAPMAK İSTERSEK ONU KULLANIRIZ (TARİH ,GÜN , İD vs.)
 
-    dispatch({
-      type: Actiontypes.UPDATE_TODO,
-      payload: updated,
-    });
+    axios
+      .put(`/todos/${todo.id}`, updated)
+      .then(() => dispatch(updatetodo(updated)));
+    // storedaki todoyu güncelle
 
     //close  fonksiyonunu çalıştırıcaz
     // close();

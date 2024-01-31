@@ -2,16 +2,19 @@ import { useState } from "react";
 import Modal from "./Modal";
 import { useDispatch } from "react-redux";
 import { Actiontypes } from "../Redux/Reducer/Actionstype";
+import { removetodos, updatetodo } from "../Redux/Reducer/actions/todoactions";
+import axios from "axios";
 
 const TodoCard = ({ todo }) => {
   const dispatch = useDispatch();
   const [isopen, setisopen] = useState(false);
   // store dan todo yu kaldır
   const handledelete = () => {
-    dispatch({
-      type: Actiontypes.REMOVE_TODO,
-      payload: todo.id,
-    });
+    // apiye silme isteği at
+    axios
+      .delete(`/todos/${todo.id}`)
+      .then(() => dispatch(removetodos(todo.id)))
+      .catch(() => alert("Silme işleminde bir sorun oluştu."));
   };
 
   // store daki todonun isdone degerini tersine çevir.
@@ -22,11 +25,12 @@ const TodoCard = ({ todo }) => {
 
     // Store daki eski todo'yu güncel ile değiştir.
     // Bileşenden store a etki etmek için dispatch fonksiyonunu kullanırız..
+    axios
+      .put(`/todos/${todo.id}`, updates)
 
-    dispatch({
-      type: "UPDATE_TODO",
-      payload: updates,
-    });
+      // store daki eski todoyu güncel todo ile değiştir.
+
+      .then(() => dispatch(updatetodo(updates)));
   };
 
   return (
@@ -45,7 +49,7 @@ const TodoCard = ({ todo }) => {
       <button onClick={handledelete} className="btn btn-danger">
         Sil
       </button>
-      {isopen && <Modal todo={todo.text} close={() => setisopen(false)} />}
+      {isopen && <Modal todo={todo} close={() => setisopen(false)} />}
     </div>
   );
 };
